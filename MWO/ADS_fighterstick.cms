@@ -12,7 +12,7 @@
 
 %DEFINE MODE_SELECT_BUTTON_IS_PRESSED JS1.b4
 
-//-- x/y axis curve settings
+//-- x/y axes curve settings
 //  Mode: Default
 %DEFINE DEFAULT_DEADZONE 5
 %DEFINE DEFAULT_GAIN GAIN9
@@ -31,30 +31,31 @@
 
 script
 
-// setup on first loop
+//setup on first loop
 if( firstscan ) then
   // variable defaults
   untilButtonIsReleased = false ;
-
-  // link virtual x/y axis to physical x/y axis input
-  output_X_Aixs = input_X_Aixs ;
-  output_y_Aixs = input_Y_Aixs ;
-  
 endif
 
+// update virtual x & y axes whit current physical x & y joystick axes values
+output_X_Aixs = input_X_Aixs ;
+output_y_Aixs = input_Y_Aixs ;
+  
 sequence
-  wait( MODE_SELECT_BUTTON_IS_PRESSED );
-  scale( output_X_Aixs, ADS_SENSITIVITY, ADS_DEADZONE, ADS_GAIN );
-  scale( output_Y_Aixs, ADS_SENSITIVITY, ADS_DEADZONE, ADS_GAIN );
+  wait( MODE_SELECT_BUTTON_IS_PRESSED ) ;
+  // then apply ADS response curve settings once
+  scale( output_X_Aixs, ADS_SENSITIVITY, ADS_DEADZONE, ADS_GAIN ) ;
+  scale( output_Y_Aixs, ADS_SENSITIVITY, ADS_DEADZONE, ADS_GAIN ) ;
 endsequence
 
 // detect when button is released
 untilButtonIsReleased = NOT MODE_SELECT_BUTTON_IS_PRESSED ;
 
 sequence
-  wait( untilButtonIsReleased );
-  scale( output_X_Aixs, DEFAULT_SENSITIVITY, DEFAULT_DEADZONE, DEFAULT_GAIN );
-  scale( output_Y_Aixs, DEFAULT_SENSITIVITY, DEFAULT_DEADZONE, DEFAULT_GAIN );
+  wait( untilButtonIsReleased ) ;
+  // then apply default response curve settings once
+  scale( output_X_Aixs, DEFAULT_SENSITIVITY, DEFAULT_DEADZONE, DEFAULT_GAIN ) ;
+  scale( output_Y_Aixs, DEFAULT_SENSITIVITY, DEFAULT_DEADZONE, DEFAULT_GAIN ) ;
 endsequence;
 
 endScript
