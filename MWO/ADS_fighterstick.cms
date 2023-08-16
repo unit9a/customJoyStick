@@ -31,10 +31,17 @@
 
 script
 
-// link virtual x/y axis to physical x/y axis input
-  output_X_Aixs = input_X_Aixs;
-  output_y_Aixs = input_Y_Aixs;
+// setup on first loop
+if( firstscan ) then
+  // variable defaults
+  untilButtonIsReleased = false ;
+
+  // link virtual x/y axis to physical x/y axis input
+  output_X_Aixs = input_X_Aixs ;
+  output_y_Aixs = input_Y_Aixs ;
   
+endif
+
 sequence
   wait( MODE_SELECT_BUTTON_IS_PRESSED );
   scale( output_X_Aixs, ADS_SENSITIVITY, ADS_DEADZONE, ADS_GAIN );
